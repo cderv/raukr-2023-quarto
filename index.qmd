@@ -11,6 +11,7 @@ format:
     code-line-numbers: false
     slide-number: true
     mermaid-format: png
+    preview-links: auto
 revealjs-plugins:
   - attribution
 execute: 
@@ -116,10 +117,10 @@ Some history context
 
 ## So, Why a New System?
 
--   The number of languages and runtimes used for scientific discourse is very broad (and the Jupyter ecosystem in particular is extraordinarily popular).
--   Quarto is at its core multi-language and multi-engine (supporting Knitr, Jupyter, and Observable today and potentially other engines tomorrow).
--   On the other hand, R Markdown is heavily tied to R which limits the number of people it can benefit.
--   Quarto is RStudio's attempt to bring 10-years experience of R Markdown to everyone!
+-   The [number of languages and runtimes used for scientific discourse is very broad]{.hl} (and the Jupyter ecosystem in particular is extraordinarily popular).
+-   Quarto is at its core [multi-language and multi-engine]{.hl} (supporting Knitr, Jupyter, and Observable today and potentially other engines tomorrow).
+-   On the other hand, [R Markdown is heavily tied to R]{.hl} which limits the number of people it can benefit.
+-   Quarto is Posit's attempt to bring 10-years experience of [R Markdown to everyone]{.hl}!
 
 # How to use Quarto ?
 
@@ -338,9 +339,12 @@ Based on core variables defined by [bslib](https://rstudio.github.io/bslib/) (so
 $h2-font-size:          1.6rem !default;
 $headings-font-weight:  500 !default;
 
+$custom-color: blue;
+
 /*-- scss:rules --*/
 h1, h2, h3, h4, h5, h6 {
   text-shadow: -1px -1px 0 rgba(0, 0, 0, .3);
+  color: $custom-color;
 }
 ```
 
@@ -380,14 +384,19 @@ Advanced page layout features inspired by Tutfe, Distill, and Hugo Prose.
 -   Responsive show/hide of site navigation and TOC
 -   Examples: [HTML](https://quarto-dev.github.io/quarto-gallery/page-layout/tufte.html), [PDF](https://quarto-dev.github.io/quarto-gallery/page-layout/tufte.pdf)
 
-##  {background-image="images/screenshot-page-layout.png"}
+::: notes
+Click on the link to show example
+:::
+
+##  {background-image="images/screenshot-page-layout.png" visibility="hidden"}
 
 ## Figure/Layout Panels {.smaller}
 
-::: columns
+:::: columns
+
 ::: {.column width="47%"}
 -   Arbitrary layout of figures and tables (similar to [cowplot](https://wilkelab.org/cowplot/articles/plot_grid.html) and [patchwork](https://patchwork.data-imaginist.com/))
--   Also works for code chunks that produce figures and tables: <https://quarto.org/docs/authoring/figures-and-layout.html#figures>
+-   Also works for code chunks that produce figures and tables. [Example](https://quarto.org/docs/authoring/figures.html#computations)
 -   Shorthand syntax (`layout-ncol` or `layout-nrow`) available for simple cases.
 -   Can target arbitrary content including equations, bullet lists, etc.
 :::
@@ -406,11 +415,12 @@ Advanced page layout features inspired by Tutfe, Distill, and Hugo Prose.
 
 ![](images/layout-attrib-negative.png)
 :::
-:::
+
+::::
 
 ## Callouts {.smaller}
 
-Work in various formats: HTML, PDF, MS Word, and ePub output
+Work in various formats: [HTML](https://quarto-dev.github.io/quarto-gallery/page-layout/tufte.html#references), [PDF](https://quarto-dev.github.io/quarto-gallery/page-layout/tufte.pdf), MS Word, and ePub output
 
 ``` markdown
 ::: {.callout-note}
@@ -478,22 +488,20 @@ List of existing extension at <https://quarto.org/docs/extensions/>
 
 ## Publishing {.smaller}
 
-### <https://quarto.org/docs/publishing/>
+#### <https://quarto.org/docs/publishing/>
 
-::: {.top-pad .bottom-pad}
 Integrated `quarto publish` command that targets a variety of services:\
- 
-:::
 
 |                                                                            |                                                                                                                      |
 |-----------------------------|-------------------------------------------|
 | [Quarto Pub](https://quarto.org/docs/publishing/quarto-pub.html)           | Free publishing service ideal for blogs, course or project websites, books, presentations, and personal hobby sites. |
 | [GitHub Pages](https://quarto.org/docs/publishing/github-pages.html)       | Publish content based on source code managed within a GitHub repository.                                             |
-| [RStudio Connect](https://quarto.org/docs/publishing/rstudio-connect.html) | Publishing platform for secure sharing of data products within an organization.                                      |
+| [Posit Connect](https://quarto.org/docs/publishing/rstudio-connect.html) | Publishing platform for secure sharing of data products within an organization.                                      |
 | [Netlify](https://quarto.org/docs/publishing/netlify.html)                 | Professional web publishing platform with many advanced features including custom domains and authentication.        |
+| [Confluence](https://quarto.org/docs/publishing/confluence.html)                 | A publishing platform for supporting team collaboration, with free and paid hosting options.        |
 | [Other Services](https://quarto.org/docs/publishing/other.html)            | Content rendered with Quarto uses standard formats (HTML, PDFs, MS Word, etc.) that can be published anywhere.       |
 
-: {tbl-colwidths=\[30,70\]}
+: {tbl-colwidths=\[20,80\]}
 
 # Advanced Formats
 
@@ -509,6 +517,10 @@ Integrated `quarto publish` command that targets a variety of services:\
 
 ## Quarto Websites
 
+:::: columns
+
+::: column
+
 -   Arbitrary content depth / organization
 
 -   Multi-level navigation (navbar / sidebar / hybrid)
@@ -517,14 +529,77 @@ Integrated `quarto publish` command that targets a variety of services:\
 
 -   Freezing computational output
 
--   Example: <https://quarto.org> and more at <https://quarto.org/docs/gallery/#websites>
+-   Example: <https://quarto.org> and more at [Gallery](https://quarto.org/docs/gallery/#websites)
+
+:::
+
+::: {.column .make-smaller style="padding-top: 2em"}
+```{.yaml filename="_quarto.yml (simple website)"}
+project:
+  type: website
+
+website:
+  title: "today"
+  favicon: logo.png
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    
+freeze: auto
+```
+:::
+::::
 
 ## Quarto Books
 
+:::: columns
+
+::: column
+
 -   Inherit features of Quarto websites (navigation, search, etc.)
+
 -   Support cross references across chapters
+
 -   Formats include HTML, PDF, MS Word, and ePub
--   Examples: <https://quarto.org/docs/gallery/#books>
+
+-   Examples: [Gallery](https://quarto.org/docs/gallery/#books)
+
+:::
+
+::: {.column .make-smaller}
+```{.yaml filename="_quarto.yml (simple book)"}
+project:
+  type: book
+
+book:
+  title: "mybook"
+  author: "Jane Doe"
+  date: "8/18/2021"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html: default
+  pdf: default
+  epub:
+    cover-image: cover.png
+```
+:::
+::::
+
+
 
 ##  {background-image="images/screenshot-book-hopr.png"}
 
@@ -532,10 +607,45 @@ Integrated `quarto publish` command that targets a variety of services:\
 
 ## Quarto Blogs
 
+:::: columns
+
+::: column
+
 -   Inherit features of Quarto websites (navigation, search, etc.)
+
 -   Automatically generated listing and RSS feed
+
 -   Customizable about page
--   Examples: <https://quarto.org/docs/blog/> and more at <https://quarto.org/docs/gallery/#websites>
+
+-   Examples: <https://quarto.org/docs/blog/> and more at [Gallery](https://quarto.org/docs/gallery/#websites)
+
+:::
+
+::: {.column .make-smaller}
+```{.yaml filename="index.qmd (website with posts/)"}
+---
+title: "myblog"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: true
+---
+```
+<br> 
+```{.yaml filename="posts/first-post/index.qmd"}
+---
+title: "Post With Code"
+description: "Post description"
+author: "Fizz McPhee"
+date: "5/22/2021"
+categories:
+  - news
+  - code
+---
+```
+:::
+::::
 
 ##  {background-image="images/screenshot-blog.png"}
 
@@ -543,7 +653,7 @@ Integrated `quarto publish` command that targets a variety of services:\
 
 <https://quarto.org/docs/presentations/revealjs/demo/>
 
--   Based on a (heavily customized) version of RevealJS:
+-   Based on a (heavily) [customized version]{.hl} of RevealJS:
     -   Image, video, and iframe backgrounds
     -   PDF Printing
     -   Speaker view
