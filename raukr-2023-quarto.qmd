@@ -1,0 +1,691 @@
+---
+title: "Introduction to Quarto"
+subtitle: Raukr 2023
+author: "Christophe Dervieux"
+institute: "Posit PBC"
+date: 06/13/2023
+format:
+  clean-revealjs:
+    theme: [default, reveal-style.scss]
+    footer: <https://quarto.org>
+    code-line-numbers: false
+    slide-number: true
+    mermaid-format: png
+revealjs-plugins:
+  - attribution
+execute: 
+  cache: true
+---
+
+# What is Quarto?
+
+*Quarto is the next generation of R Markdown:\
+It unifies and extends it*
+
+## Quarto ...
+
+...is a new, open-source, scientific, and technical publishing system
+
+-   Computations: Python, R, Julia, Observable JS
+-   Markdown: [Pandoc](https://pandoc.org) w/ many enhancements
+-   Output: Documents, presentations, websites, books, blogs
+
+![[Artwork from "Hello, Quarto" keynote by Julia Lowndes and Mine Çetinkaya-Rundel, presented at RStudio Conference 2022. Illustrated by Allison Horst.]{.small-cap}](images/horst_quarto_schematic.png){fig-alt="A schematic representing the multi-language input (e.g. Python, R, Observable, Julia) and multi-format output (e.g. PDF, html, Word documents, and more) versatility of Quarto." fig-align="center"}
+
+## With Quarto...
+
+... you can weave together narrative text and code to produce elegantly formatted output as documents, web pages, blog posts, books and more.
+
+. . .
+
+<br>
+
+*just like R Markdown...*
+
+. . .
+
+<br>
+
+but not *just like* it, there's more to it...
+
+## Quarto ... {.center auto-animate="true"}
+
+**unifies** + **extends** the R Markdown ecosystem
+
+## Quarto ... {.center auto-animate="true"}
+
+**unifies** + **extends** the R Markdown ecosystem
+
+<br>
+
+**unifies** for people who love R Markdown
+
+## Quarto ... {.center auto-animate="true"}
+
+**unifies** + **extends** the R Markdown ecosystem
+
+<br>
+
+**unifies** for people who love R Markdown
+
+**extends** for people who don't know R Markdown
+
+## Quarto unifies + extends R Markdown {visibility="hidden"}
+
+::: incremental
+-   Consistent implementation of attractive and handy features across outputs: tabsets, code-folding, syntax highlighting, etc.
+-   More accessible defaults as well as better support for accessibility
+-   Guardrails, particularly helpful for new learners: YAML completion, informative syntax errors, etc.
+-   Support for other languages like Python, Julia, Observable, and more via Jupyter engine for executable code chunks.
+:::
+
+# Why ? {visibility="hidden"}
+
+Some history context
+
+## Origins {visibility="hidden"}
+
+-   Open source project sponsored by Posit, PBC.
+-   10 years of experience with R Markdown convinced us that the core ideas were sound.
+-   The number of languages and runtimes used for scientific discourse is very broad.
+-   Quarto is a ground-up re-imagining of R Markdown that is fundamentally multi-language and multi-engine.
+
+## Goal: Computational Documents {visibility="hidden"}
+
+::: columns
+::: {.column width="60%"}
+![](images/nature-reproducibility.png)
+:::
+
+::: {.column width="40%"}
+-   Documents that incorporate the source code required for their production
+-   Notebook and plain text flavors
+-   Automation and reproducibility
+:::
+:::
+
+## Goal: Scientific Markdown {visibility="hidden"}
+
+![](images/scientific-markdown.png)
+
+## Goal: Single Source Publishing {visibility="hidden"}
+
+<https://coko.foundation/articles/single-source-publishing.html>
+
+![](images/single-source-publishing.jpg)
+
+## So, Why a New System?
+
+-   The number of languages and runtimes used for scientific discourse is very broad (and the Jupyter ecosystem in particular is extraordinarily popular).
+-   Quarto is at its core multi-language and multi-engine (supporting Knitr, Jupyter, and Observable today and potentially other engines tomorrow).
+-   On the other hand, R Markdown is heavily tied to R which limits the number of people it can benefit.
+-   Quarto is RStudio's attempt to bring 10-years experience of R Markdown to everyone!
+
+# How to use Quarto ?
+
+*As this is not an R package like R Markdown...*
+
+## Revisit: What is Quarto? {.smaller}
+
+Quarto is a command line interface (CLI) that renders plain text formats (`.qmd`, `.rmd`, `.md`) OR mixed formats (`.ipynb`/Jupyter notebook) into static PDF/Word/HTML reports, books, websites, presentations and more.
+
+```{bash}
+#| eval: false
+#| echo: true
+#| code-line-numbers: "|1|4|12|17|18"
+
+$ quarto --help
+
+  Usage:   quarto 
+  Version: 1.4.128
+
+  Description:
+
+    Quarto CLI
+
+  Options:
+
+    -h, --help     - Show this help.
+    -V, --version  - Show the version number for this program.  
+
+  Commands:
+
+    render          [input] [args...]     - Render files or projects to various document types.
+    preview         [file] [args...]      - Render and preview a document or website project.
+    serve           [input]               - Serve a Shiny interactive document.
+    create          [type] [commands...]  - Create a Quarto project or extension
+    create-project  [dir]                 - Create a project for rendering multiple documents
+    convert         <input>               - Convert documents to alternate representations.
+    pandoc          [args...]             - Run the version of Pandoc embedded within Quarto.
+    run             [script] [args...]    - Run a TypeScript, R, Python, or Lua script.
+    add             <extension>           - Add an extension to this folder or project
+    install         [target...]           - Installs an extension or global dependency.
+    publish         [provider] [path]     - Publish a document or project. Available providers include:
+    check           [target]              - Verify correct functioning of Quarto installation.
+    help            [command]             - Show this help or the help of a sub-command.
+```
+
+# Quarto Computation Engines
+
+-   Knitr
+-   Jupyter
+-   Observable JS
+-   Others possible...
+
+## Knitr Engine {.nostretch .smaller}
+
+![](images/rstudio-qmd-how-it-works.png)
+
+For R, Quarto still uses Knitr under the hood. Consequently, ***the vast majority of existing Rmd files*** can be rendered unmodified.
+
+Note that the standard syntax for chunk options has changed (old syntax still works):
+
+```{{{r}}}
+#| echo: false
+#| fig-cap: "Cars"
+plot(cars)
+```
+
+## Knitr Engine
+
+![](images/knitr-engine.png)
+
+## Jupyter Engine --- ipynb {.nostretch .smaller}
+
+![](images/qmd-how-it-works.png)
+
+The Jupyter engine supports the use of Python, Julia, and any other language that has a Jupyter kernel.
+
+Jupyter supports two input file formats:
+
+-   Traditional notebooks (`.ipynb`)
+-   Markdown w/ chunks (`.qmd`)
+
+Hello Jupyter: <https://quarto.org/#hello-quarto>
+
+## Jupyter Engine: ipynb {.nostretch}
+
+You can also render Jupyter notebooks (`.ipynb` files) directly. Note that in this case no execution occurs by default:
+
+![](images/ipynb-how-it-works.png)
+
+##  {visibility="hidden" background-image="images/screenshot-jupyter-engine.png"}
+
+## Jupyter Engine: Tooling {visibility="hidden"}
+
+Side-by-side preview for JupyterLab, VS Code, Emacs, etc.:
+
+``` bash
+$ quarto preview notebook.ipynb
+```
+
+![](images/jupyterlab-preview.png){width="70%" fig-align="center"}
+
+## Observable JS
+
+Quarto includes native support for Observable JS, a set of enhancements to vanilla JavaScript created by [Mike Bostock](https://en.wikipedia.org/wiki/Mike_Bostock) (also the author of [D3](https://d3js.org/)).
+
+Observable JS is distinguished by its reactive runtime, which is especially well suited for interactive data exploration and analysis.
+
+Demo: <https://quarto.org/docs/interactive/ojs/#example>
+
+##  {background-image="images/screenshot-ojs.png"}
+
+# Shared Core Syntax
+
+Core features have similar expression across formats:
+
+-   Code folding
+
+-   Tabsets
+
+-   Theming
+
+## Unifies R Markdown {.smaller}
+
+The R Markdown ecosystem was built over nearly a decade (resulting in lots of inconsistency & duplication)
+
+::: columns
+::: {.column width="50%"}
+##### Packages
+
+-   tufte
+-   rticles
+-   revealjs
+-   xaringan
+-   bookdown
+-   blogdown
+-   distill
+:::
+
+::: {.column width="50%"}
+##### Features
+
+-   Floating TOC
+-   Code folding / copying
+-   Syntax highlighting
+-   Page layout
+-   Theming
+-   Tabsets
+-   Section anchors
+:::
+:::
+
+Some features requires specific R packages and specific syntax.
+
+## Code folding / copying
+
+```{r}
+#| echo: fenced
+#| code-fold: true
+
+library(ggplot2)
+dat <- data.frame(cond = rep(c("A", "B"), each=10),
+                  xvar = 1:20 + rnorm(20,sd=3),
+                  yvar = 1:20 + rnorm(20,sd=3))
+
+ggplot(dat, aes(x=xvar, y=yvar)) +
+    geom_point(shape=1) + 
+    geom_smooth() 
+```
+
+## Tabsets
+
+::: panel-tabset
+#### R
+
+``` r
+fizz_buzz <- function(fbnums = 1:50) {
+  output <- dplyr::case_when(
+    fbnums %% 15 == 0 ~ "FizzBuzz",
+    fbnums %% 3 == 0 ~ "Fizz",
+    fbnums %% 5 == 0 ~ "Buzz",
+    TRUE ~ as.character(fbnums)
+  )
+  print(output)
+}
+```
+
+#### Python
+
+``` python
+def fizz_buzz(num):
+  if num % 15 == 0:
+    print("FizzBuzz")
+  elif num % 5 == 0:
+    print("Buzz")
+  elif num % 3 == 0:
+    print("Fizz")
+  else:
+    print(num)
+```
+:::
+
+Tabset syntax: <https://quarto.org/docs/output-formats/html-basics.html#tabsets>
+
+##  {visibility="hidden" background-image="images/screenshot-tabsets.png"}
+
+## Theming {.smaller}
+
+Universal themeing system (based on SCSS) for all HTML output formats (shared by HTML and RevealJS slides, extendable to work with anything).
+
+Based on core variables defined by [bslib](https://rstudio.github.io/bslib/) (so fully compatible with Shiny, Flexdashboard, & R Markdown themes).
+
+[Sample theme](https://quarto.org/docs/output-formats/html-themes.html#theme-options) file:
+
+``` scss
+/*-- scss:defaults --*/
+$h2-font-size:          1.6rem !default;
+$headings-font-weight:  500 !default;
+
+/*-- scss:rules --*/
+h1, h2, h3, h4, h5, h6 {
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, .3);
+}
+```
+
+##  {visibility="hidden" background-image="images/screenshot-themes.png"}
+
+# New Features {.smaller}
+
+-   Cross references
+-   Advanced page layout
+-   Figure/layout panels
+-   Callouts
+-   Diagrams
+-   Extensions
+-   YAML intelligence
+-   Publishing
+
+## Cross References {.smaller}
+
+![](images/crossref-subfigures.png){.illustration fig-align="center"}
+
+Cross reference figures, tables, equations, sections, theorems, etc.
+
+-   Using [Plain markdown](https://quarto.org/docs/authoring/cross-references.html#subfigures)
+
+-   Using [Computation with Knitr or Jupyter](https://quarto.org/docs/authoring/cross-references.html#computations)
+
+##  {background-image="images/screenshot-markdown-figures.png"}
+
+##  {background-image="images/screenshot-knitr-figures.png"}
+
+## Advanced page layout
+
+Advanced page layout features inspired by Tutfe, Distill, and Hugo Prose.
+
+-   Figures and tables that span the entire page
+-   Use of margin for figures, equations, captions, asides, footnotes, and citations
+-   Responsive show/hide of site navigation and TOC
+-   Examples: [HTML](https://quarto-dev.github.io/quarto-gallery/page-layout/tufte.html), [PDF](https://quarto-dev.github.io/quarto-gallery/page-layout/tufte.pdf)
+
+##  {background-image="images/screenshot-page-layout.png"}
+
+## Figure/Layout Panels {.smaller}
+
+::: columns
+::: {.column width="47%"}
+-   Arbitrary layout of figures and tables (similar to [cowplot](https://wilkelab.org/cowplot/articles/plot_grid.html) and [patchwork](https://patchwork.data-imaginist.com/))
+-   Also works for code chunks that produce figures and tables: <https://quarto.org/docs/authoring/figures-and-layout.html#figures>
+-   Shorthand syntax (`layout-ncol` or `layout-nrow`) available for simple cases.
+-   Can target arbitrary content including equations, bullet lists, etc.
+:::
+
+::: {.column width="5%"}
+:::
+
+::: {.column width="48%"}
+``` markdown
+::: {layout="[[40,-20,40], [100]]"}
+![Surus](surus.png)
+![Hanno](hanno.png)
+![Lin Wang](lin-wang.png)
+:::
+```
+
+![](images/layout-attrib-negative.png)
+:::
+:::
+
+## Callouts {.smaller}
+
+Work in various formats: HTML, PDF, MS Word, and ePub output
+
+``` markdown
+::: {.callout-note}
+Note that there are five types of callouts, including: 
+`note`, `tip`, `warning`, `caution`, and `important`.
+:::
+```
+
+![](images/callouts.png){width="90%" fig-align="center"}
+
+## Diagrams {.nostretch}
+
+Quarto has native support for embedding [Mermaid](https://mermaid-js.github.io/mermaid/#/) and [Graphviz](https://graphviz.org/) diagrams.
+
+```{mermaid}
+%%| echo: fenced
+%%| output-location: column
+flowchart TD
+  A[Hard edge] --> B(Round edge)
+  B --> C{Decision}
+  C --> D[Result one]
+  C --> E[Result two]
+```
+
+## Quarto Extensions {.smaller}
+
+List of existing extension at <https://quarto.org/docs/extensions/>
+
+-   [Shortcodes](https://quarto.org/docs/extensions/shortcodes.html) are special markdown directives that generate various types of content. For example, to embed videos in a document:
+
+    ``` markdown
+    {{{< video https://www.youtube.com/embed/wo9vZccmqwc >}}}
+    ```
+
+-   [Filters](https://quarto.org/docs/extensions/filters.html) are a flexible and powerful tool for introducing new global behaviors and/or new markdown rendering behaviors. For example,
+
+    ``` yaml
+    filters: [webr]
+    ```
+
+-   [Formats](https://quarto.org/docs/extensions/formats.html) enable you to create new output formats by bundling together document options, templates, stylesheets, and other content. For example, an article for Association of Computing Machinery (ACM) journal
+
+    ``` yaml
+    format: acm-pdf
+    ```
+
+## YAML Intelligence {.smaller}
+
+-   YAML code completion for config files, front matter, and chunk options
+-   Real-time diagnostics and clear errors at render time for invalid YAML
+
+::: columns
+::: {.column width="50%"}
+#### Completion
+
+![](images/yaml-completion.png){.illustration}
+:::
+
+::: {.column width="50%"}
+#### Diagnostics
+
+![](images/yaml-diagnostics.png){.illustration}
+:::
+:::
+
+## Publishing {.smaller}
+
+### <https://quarto.org/docs/publishing/>
+
+::: {.top-pad .bottom-pad}
+Integrated `quarto publish` command that targets a variety of services:\
+ 
+:::
+
+|                                                                            |                                                                                                                      |
+|-----------------------------|-------------------------------------------|
+| [Quarto Pub](https://quarto.org/docs/publishing/quarto-pub.html)           | Free publishing service ideal for blogs, course or project websites, books, presentations, and personal hobby sites. |
+| [GitHub Pages](https://quarto.org/docs/publishing/github-pages.html)       | Publish content based on source code managed within a GitHub repository.                                             |
+| [RStudio Connect](https://quarto.org/docs/publishing/rstudio-connect.html) | Publishing platform for secure sharing of data products within an organization.                                      |
+| [Netlify](https://quarto.org/docs/publishing/netlify.html)                 | Professional web publishing platform with many advanced features including custom domains and authentication.        |
+| [Other Services](https://quarto.org/docs/publishing/other.html)            | Content rendered with Quarto uses standard formats (HTML, PDFs, MS Word, etc.) that can be published anywhere.       |
+
+: {tbl-colwidths=\[30,70\]}
+
+# Advanced Formats
+
+-   Websites
+
+-   Books
+
+-   Blogs
+
+-   Presentations
+
+-   Journal Articles
+
+## Quarto Websites
+
+-   Arbitrary content depth / organization
+
+-   Multi-level navigation (navbar / sidebar / hybrid)
+
+-   Full text search (client side or Algolia)
+
+-   Freezing computational output
+
+-   Example: <https://quarto.org> and more at <https://quarto.org/docs/gallery/#websites>
+
+## Quarto Books
+
+-   Inherit features of Quarto websites (navigation, search, etc.)
+-   Support cross references across chapters
+-   Formats include HTML, PDF, MS Word, and ePub
+-   Examples: <https://quarto.org/docs/gallery/#books>
+
+##  {background-image="images/screenshot-book-hopr.png"}
+
+##  {visibility="hidden" background-image="images/screenshot-book-altair.png"}
+
+## Quarto Blogs
+
+-   Inherit features of Quarto websites (navigation, search, etc.)
+-   Automatically generated listing and RSS feed
+-   Customizable about page
+-   Examples: <https://quarto.org/docs/blog/> and more at <https://quarto.org/docs/gallery/#websites>
+
+##  {background-image="images/screenshot-blog.png"}
+
+## Quarto Presentations {.smaller}
+
+<https://quarto.org/docs/presentations/revealjs/demo/>
+
+-   Based on a (heavily customized) version of RevealJS:
+    -   Image, video, and iframe backgrounds
+    -   PDF Printing
+    -   Speaker view
+    -   Plugin system
+-   Many features inspired by [xaringanExtra](https://pkg.garrickadenbuie.com/xaringanExtra/#/?id=xaringanextra):
+    -   Chalkboard / drawing on slides
+    -   Multicast (synced presenter / viewer slides)
+    -   Slide tone (for accessibility)
+    -   Absolute positioning of slide elements
+
+## Quarto Journals {.smaller}
+
+### <https://quarto.org/docs/journals/>
+
+Custom format system designed to accomodate the creation of articles for publishing in professional Journals:
+
+-   The ability to flexibly adapt the native LaTeX templates provided by Journals for use with Pandoc.
+
+-   The use of spans and divs to apply formatting (which enables targeting by CSS for HTML output and LaTeX macros/environments for PDF output).
+
+-   A standardized schema for authors and affiliations so that you can express this data once and then have it automatically formatted according to the styles required for various Journals.
+
+-   The use of Citation Style Language (CSL) to automate the formatting of citations and bibliographies according to whatever style is required by various Journals.
+
+Example: <https://quarto-journals.github.io/jss/>
+
+# Quarto Tools
+
+-   Quarto CLI
+
+-   RStudio IDE
+
+-   VS Code Extension
+
+-   Jupyter Lab
+
+-   Text Editors
+
+-   Visual Editor
+
+## Quarto CLI
+
+Core component that drives Quarto rendering. This is the only thing you need to render plain markdown (it includes Pandoc 2.18).
+
+-   Add `knitr` to render documents w/ R
+-   Add `jupyter` to render with Jupyter kernels
+
+Like `git`, this is a system level component that is used by RStudio, VS Code, Jupyter Lab, terminal sessions, etc.
+
+Download/install: <https://quarto.org/docs/get-started/>
+
+## RStudio IDE
+
+Current release of RStudio IDE has Quarto tooling on-par w/ R Markdown tooling
+
+::: columns
+::: {.column width="50%"}
+![](images/new-quarto-doc.png){.illustration}
+:::
+
+::: {.column width="50%"}
+![](images/rstudio-new-knitr-project.png){.illustration}
+:::
+:::
+
+## VS Code Extension {.smaller}
+
+<https://quarto.org/docs/tools/vscode.html>
+
+-   Render command with integrated preview pane
+-   Syntax highlighting for markdown and embedded languages
+-   Completion for embedded languages (e.g. Python, R, Julia, LaTeX, etc.)
+-   Completion and diagnostics for project files and document/cell options
+-   Completion for citations and cross references
+-   Commands and key-bindings for running cells and selected line(s)
+-   Automatic navigation to render errors for Jupyter, Knitr, and YAML
+-   Live preview for embedded mermaid and graphviz diagrams
+-   Assist panel for contextual help, image preview, and math preview
+-   Code snippets for common markdown constructs
+-   Code folding and document outline for navigation within documents
+-   Workspace symbol provider for navigation across project files
+
+##  {visibility="hidden" background-image="images/screenshot-vscode-preview.png"}
+
+##  {visibility="hidden" background-image="images/screenshot-vscode-r.png"}
+
+## Jupyter Lab
+
+![](images/jupyterlab-preview.png)
+
+## Text Editors
+
+-   Use `quarto preview` with any text editor:
+
+    ``` {.bash code-line-numbers="false"}
+    $ quarto preview julia.qmd
+    ```
+
+    Live reloading for documents and websites/books.
+
+-   Quarto modes/extensions for various editors:
+
+    -   Emacs: <https://github.com/quarto-dev/quarto-emacs>
+    -   Vim: <https://github.com/quarto-dev/quarto-vim>
+    -   Neovim: <https://github.com/jmbuhr/quarto-nvim>
+
+## Visual Editor
+
+<https://quarto.org/docs/visual-editor/>
+
+-   The Quarto visual editor provides a WYSIWYM editing interface for all of Pandoc markdown
+
+-   Tables, citations, cross-references, footnotes, divs/spans, definition lists, attributes, raw HTML/TeX, etc.
+
+-   Includes support for executing code cells and viewing their output inline.
+
+##  {visibility="hidden" background-image="images/screenshot-visual-editor.png"}
+
+##  {visibility="hidden" background-image="images/screenshot-visual-editor-tables.png"}
+
+##  {visibility="hidden" background-image="images/screenshot-visual-editor-equations.png"}
+
+##  {visibility="hidden" background-image="images/screenshot-visual-editor-citations.png"}
+
+##  {background-image="images/screenshot-visual-editor-crossrefs.png"}
+
+## Learning More {.smaller}
+
+#### Slides: <https://jjallaire.quarto.pub/rmedicine-introduction-to-quarto> {.bottom-pad}
+
+-   Getting started: <https://quarto.org/docs/get-started/>
+
+-   User guide: <https://quarto.org/docs/guide/>
+
+-   Awesome Quarto: <https://github.com/mcanouil/awesome-quarto>
+
+-   rstudio::conf(2022)
+
+    -   [Keynote: Reimagine + Collaborate + Share with Quarto](https://www.rstudio.com/conference/2022/keynotes/collaborate-with-quarto/)
+    -   [Quarto for R Markdown users](https://www.rstudio.com/conference/2022/talks/quarto-for-rmarkdown-users/)
+    -   [These are a few of my favorite things (about Quarto presentations)](https://www.rstudio.com/conference/2022/talks/my-favorite-things-quarto-presentations/)
+    -   [Literate Programming With Jupyter Notebooks and Quarto](https://www.rstudio.com/conference/2022/talks/literate-programming-quarto/)
+    -   [Websites & Books & Blogs, oh my! Creating Rich Content with Quarto](https://www.rstudio.com/conference/2022/talks/sessions/quarto-deep-dive/websites-books-blogs-quarto/)
+
+#### Questions? {.top-pad}
