@@ -782,7 +782,7 @@ Current release of RStudio IDE has Quarto tooling on-par w/ R Markdown tooling
 
 ## Learning More {.smaller}
 
-#### Slides: <https://jjallaire.quarto.pub/rmedicine-introduction-to-quarto> {.bottom-pad}
+#### Slides: <https://cderv.github.io/raukr-2023-quarto> {.bottom-pad}
 
 -   Getting started: <https://quarto.org/docs/get-started/>
 
